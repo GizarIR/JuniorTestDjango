@@ -5,18 +5,38 @@
 	<title>{{title}}</title>
 </head>
 <body>
+<div style="padding:20px;margin:20px;border:1px solid #ccc">
+    <h2>Загрузка файла</h2>
+	<form method="post" enctype="multipart/form-data">
+		{% csrf_token %}
+		<input type="file" name="my_file">
+		<button type="submit">Загрузить</button>
+	</form>
 
-<form method="post" enctype="multipart/form-data">
-	{% csrf_token %}
-	<input type="file" name="my_file">
-	<button type="submit">Upload</button>
-</form>
+	{% if uploaded_file_url %}
+		<p>Файл загружен: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
+	{% endif %}
+</div>
+<div style="padding:20px;margin:20px;border:1px solid #ccc">
+    <h2>Подсчет вхождения слов</h2>
+	<form method="post" action="{% url 'wordcount' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		Введите слово: <input type="text" name="my_word">
+		<button type="submit">Подсчитать</button>
+	</form>
 
-{% if uploaded_file_url %}
-	<p>File uploaded at: <a href="{{ uploaded_file_url }}">{{ uploaded_file_url }}</a></p>
-{% endif %}
-
-<p><a href="{% url 'home' %}">Return to home</a></p>
+	{% if my_word %}
+		<p>Слово: {{ my_word }} встречается {{ num }} раз</p>
+	{% endif %}
+</div>
+<div style="padding:20px;margin:20px;border:1px solid #ccc">
+    <h2>Очистка памяти</h2>
+	<form method="post" action="{% url 'clear_memory' %}" enctype="multipart/form-data">
+		{% csrf_token %}
+		Для очистки памяти и БД нажмите:
+		<button type="submit">Очистить</button>
+	</form>
+</div>
 
 </body>
 </html>

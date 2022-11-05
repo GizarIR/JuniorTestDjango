@@ -1,3 +1,12 @@
 from django.db import models
 
-# Create your models here.
+class Word(models.Model):
+    text = models.CharField(
+        unique=True,
+        max_length=64,
+    )
+    num = models.IntegerField()
+    file_url = models.CharField(
+        max_length=255,
+        blank=True,
+    )
