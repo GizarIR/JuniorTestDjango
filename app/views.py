@@ -4,18 +4,18 @@ from .models import *
 
 
 def handle_uploaded_file(file):
-    # with open(file, 'r') as f:
-    text =''
+    text = ''
     text = file.read().decode()
-    # зачистим текст от знаков препинания и больших букв
+
+    # clear text
     text = text.lower()
     text = text.replace(';', '')
     text = text.replace(',', '')
     text = text.replace('.', '')
     text = text.replace(':', '')
-    # преобразуем текст в список
+
     l_text = text.split()
-    # создадим словарь для хранения подсчитываемых элементов
+    # create dict for calc
     count = {}
     for word in l_text:
         if word in count:
@@ -23,7 +23,6 @@ def handle_uploaded_file(file):
         else:
             count[word] = 1
     for k, v in count.items():
-        print(k, v)
         Word.objects.create(text=k, num=v)
     return count
 
@@ -31,18 +30,6 @@ def handle_uploaded_file(file):
 def clear_db():
     Word.objects.all().delete()
 
-# def index(request):
-#     # print(request.FILES['file'])
-#     if request.method == 'POST':
-#         form = UploadFileForm(request.POST, request.FILES)
-#         # print(form)
-#         if form.is_valid():
-#             print(request.FILES['file'])
-#             handle_uploaded_file(request.FILES['my_file'])
-#             return HttpResponseRedirect('home')
-#     else:
-#         form = UploadFileForm()
-#     return render(request, 'base.html', {'form': form})
 
 def index(request):
     if request.FILES:
@@ -58,6 +45,7 @@ def index(request):
                 'uploaded_file_url': uploaded_file_url
             })
     return render(request, 'base.html')
+
 
 def wordcount(request):
     num=0
@@ -75,6 +63,7 @@ def wordcount(request):
                 'uploaded_file_url': file_url,
             })
     return render(request, 'base.html')
+
 
 def clear_memory(request):
     clear_db()
